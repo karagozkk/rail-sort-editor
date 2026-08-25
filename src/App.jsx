@@ -637,7 +637,7 @@ function App() {
       zip.file(key, JSON.stringify(parsedLevels[key], null, 2));
     });
     const content = await zip.generateAsync({ type: 'blob' });
-    saveAs(content, 'workspace_backup.zip');
+    saveAs(content, 'railsort-workspace-file.zip');
   };
 
   const handleImportWorkspace = (e) => {
