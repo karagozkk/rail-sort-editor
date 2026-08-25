@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const ExportSettingsModal = ({ onClose, onExport }) => {
   const [gridMultiplier, setGridMultiplier] = useState(6.6);
-  const [cornerMultiplier, setCornerMultiplier] = useState(2.0);
+  const [cornerMultiplier, setCornerMultiplier] = useState(3.0);
 
   const handleExport = () => {
     onExport({ gridMultiplier, cornerMultiplier });
