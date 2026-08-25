@@ -1,0 +1,184 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c06713979caccb64c8345aa318226361, type: 3}
+  m_Name: Level_5
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  levelIndex: 5
+  levelNumber: 5
+  trainCapacity: 20
+  theme: 0
+  themeVar: 1
+  cameraOrthographicSize: 22.9
+  splineCorners:
+  - {x: 0, y: 0, z: 72.6}
+  - {x: 0, y: 0, z: 33}
+  - {x: 33, y: 0, z: 33}
+  - {x: 33, y: 0, z: 72.6}
+  cornerRadius: 2
+  isSplineClosed: 1
+  depots:
+  - depotId: Depot_1
+    position: {x: 9.899999999999999, y: 0, z: 56.099999999999994}
+    rotation: {x: 0, y: 180, z: 0}
+    isLocked: 0
+    keyColor: 0
+    keyModel: 0
+    wagons:
+    - slotIndex: 0
+      wagonColor: 1
+      wagonType: 1
+      isHidden: 0
+    - slotIndex: 1
+      wagonColor: 1
+      wagonType: 1
+      isHidden: 0
+    - slotIndex: 2
+      wagonColor: 3
+      wagonType: 3
+      isHidden: 0
+    - slotIndex: 3
+      wagonColor: 3
+      wagonType: 3
+      isHidden: 0
+    - slotIndex: 4
+      wagonColor: 2
+      wagonType: 2
+      isHidden: 0
+    - slotIndex: 5
+      wagonColor: 2
+      wagonType: 2
+      isHidden: 0
+    - slotIndex: 6
+      wagonColor: 1
+      wagonType: 1
+      isHidden: 0
+    - slotIndex: 7
+      wagonColor: 1
+      wagonType: 1
+      isHidden: 0
+  - depotId: Depot_2
+    position: {x: 9.899999999999999, y: 0, z: 16.5}
+    rotation: {x: 0, y: 180, z: 0}
+    isLocked: 0
+    keyColor: 0
+    keyModel: 0
+    wagons:
+    - slotIndex: 0
+      wagonColor: 1
+      wagonType: 1
+      isHidden: 0
+    - slotIndex: 1
+      wagonColor: 1
+      wagonType: 1
+      isHidden: 0
+    - slotIndex: 2
+      wagonColor: 2
+      wagonType: 2
+      isHidden: 0
+    - slotIndex: 3
+      wagonColor: 2
+      wagonType: 2
+      isHidden: 0
+    - slotIndex: 4
+      wagonColor: 5
+      wagonType: 0
+      isHidden: 0
+    - slotIndex: 5
+      wagonColor: 5
+      wagonType: 0
+      isHidden: 0
+    - slotIndex: 6
+      wagonColor: 2
+      wagonType: 2
+      isHidden: 0
+    - slotIndex: 7
+      wagonColor: 2
+      wagonType: 2
+      isHidden: 0
+  - depotId: Depot_3
+    position: {x: 23.099999999999998, y: 0, z: 16.5}
+    rotation: {x: 0, y: 180, z: 0}
+    isLocked: 0
+    keyColor: 0
+    keyModel: 0
+    wagons:
+    - slotIndex: 0
+      wagonColor: 3
+      wagonType: 3
+      isHidden: 0
+    - slotIndex: 1
+      wagonColor: 3
+      wagonType: 3
+      isHidden: 0
+    - slotIndex: 2
+      wagonColor: 5
+      wagonType: 0
+      isHidden: 0
+    - slotIndex: 3
+      wagonColor: 5
+      wagonType: 0
+      isHidden: 0
+    - slotIndex: 4
+      wagonColor: 3
+      wagonType: 3
+      isHidden: 0
+    - slotIndex: 5
+      wagonColor: 3
+      wagonType: 3
+      isHidden: 0
+    - slotIndex: 6
+      wagonColor: 5
+      wagonType: 0
+      isHidden: 0
+    - slotIndex: 7
+      wagonColor: 5
+      wagonType: 0
+      isHidden: 0
+  - depotId: Depot_4
+    position: {x: 23.099999999999998, y: 0, z: 56.099999999999994}
+    rotation: {x: 0, y: 180, z: 0}
+    isLocked: 0
+    keyColor: 0
+    keyModel: 0
+    wagons:
+    - slotIndex: 0
+      wagonColor: 3
+      wagonType: 3
+      isHidden: 0
+    - slotIndex: 1
+      wagonColor: 3
+      wagonType: 3
+      isHidden: 0
+    - slotIndex: 2
+      wagonColor: 2
+      wagonType: 2
+      isHidden: 0
+    - slotIndex: 3
+      wagonColor: 2
+      wagonType: 2
+      isHidden: 0
+    - slotIndex: 4
+      wagonColor: 1
+      wagonType: 1
+      isHidden: 0
+    - slotIndex: 5
+      wagonColor: 1
+      wagonType: 1
+      isHidden: 0
+    - slotIndex: 6
+      wagonColor: 5
+      wagonType: 0
+      isHidden: 0
+    - slotIndex: 7
+      wagonColor: 5
+      wagonType: 0
+      isHidden: 0
