@@ -42,6 +42,9 @@ const InfoModal = ({ onClose }) => {
           <p style={{ margin: 0, fontSize: '13px', lineHeight: '1.5', color: '#cbd5e1' }}>
             Eğer elinizde önceden kaydedilmiş bir <strong>railsort-workspace-file.zip</strong> dosyası varsa, üst menüdeki <strong>📥 Import Workspace (.zip)</strong> butonu ile tüm seviyelerinizi anında içeri aktarabilirsiniz.
           </p>
+          <p style={{ margin: 0, fontSize: '13px', lineHeight: '1.5', color: '#cbd5e1' }}>
+            📥 <strong>Örnek Seviye Paketleri:</strong> Hazır 20 bölümlük örnek seviye paketini <a href="https://github.com/karagozkk/rail-sort-editor/releases" target="_blank" rel="noreferrer" style={{ color: '#38bdf8', textDecoration: 'underline' }}>GitHub Releases</a> sayfasından indirebilirsiniz.
+          </p>
           <p style={{ margin: 0, fontSize: '12px', lineHeight: '1.4', color: '#94a3b8' }}>
             💡 <em>Çalışmalarınız otomatik olarak tarayıcınızda saklanır. Ancak tarayıcı geçmişi veya çerezleri temizlendiğinde kaybolmaması için düzenli aralıklarla <strong>📤 Export Workspace (.zip)</strong> yapmanız önerilir.</em>
           </p>
