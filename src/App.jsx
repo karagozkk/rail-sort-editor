@@ -3,6 +3,7 @@ import './App.css';
 import Toolbar from './components/Toolbar';
 import Grid from './components/Grid';
 import ExportSettingsModal from './components/ExportSettingsModal';
+import InfoModal from './components/InfoModal';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { exportToUnity } from './utils/exportUnity';
@@ -56,6 +57,7 @@ function App() {
   const [hoveredDepotId, setHoveredDepotId] = useState(null);
 
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [lastActiveDepotId, setLastActiveDepotId] = useState(null);
   const [lastActiveObject, setLastActiveObject] = useState(null);
   const [lastActiveWagons, setLastActiveWagons] = useState(null);
@@ -731,7 +733,34 @@ function App() {
       </header>
 
       <div className="main-content">
-        <div className="grid-wrapper">
+        <div className="grid-wrapper" style={{ position: 'relative' }}>
+          <button
+            className="info-btn"
+            onClick={() => setIsInfoModalOpen(true)}
+            title="Kullanım Kılavuzu & Kısayollar"
+            style={{
+              position: 'absolute',
+              top: '16px',
+              left: '16px',
+              zIndex: 100,
+              width: '38px',
+              height: '38px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--panel-bg)',
+              border: '1px solid var(--border-color)',
+              color: 'var(--text-primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '18px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+              transition: 'all 0.2s ease',
+              padding: 0
+            }}
+          >
+            ℹ️
+          </button>
           <Grid
             gridSize={gridSize}
             isHalfGrid={isHalfGrid}
@@ -782,6 +811,11 @@ function App() {
           <ExportSettingsModal 
             onClose={() => setIsExportModalOpen(false)}
             onExport={handleExportUnity}
+          />
+        )}
+        {isInfoModalOpen && (
+          <InfoModal 
+            onClose={() => setIsInfoModalOpen(false)}
           />
         )}
       </div>
