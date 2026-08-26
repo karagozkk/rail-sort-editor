@@ -3,6 +3,7 @@ import './App.css';
 import Toolbar from './components/Toolbar';
 import Grid from './components/Grid';
 import ExportSettingsModal from './components/ExportSettingsModal';
+import ImportWorkspaceModal from './components/ImportWorkspaceModal';
 import InfoModal from './components/InfoModal';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
@@ -57,6 +58,7 @@ function App() {
   const [hoveredDepotId, setHoveredDepotId] = useState(null);
 
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [lastActiveDepotId, setLastActiveDepotId] = useState(null);
   const [lastActiveObject, setLastActiveObject] = useState(null);
@@ -723,7 +725,7 @@ function App() {
           <button className="secondary-btn" onClick={handleRedo} disabled={future.length === 0}>↪ Redo</button>
           <div style={{ width: '1px', height: '24px', background: 'var(--border-color)', margin: '0 4px' }}></div>
           <input type="file" ref={fileInputRef} accept=".zip" style={{ display: 'none' }} onChange={handleImportWorkspace} />
-          <button className="secondary-btn" onClick={() => fileInputRef.current?.click()}>📥 Import Workspace (.zip)</button>
+          <button className="secondary-btn" onClick={() => setIsImportModalOpen(true)}>📥 Import Workspace (.zip)</button>
           <button className="secondary-btn" onClick={handleExportWorkspace}>📤 Export Workspace (.zip)</button>
           <div style={{ width: '1px', height: '24px', background: 'var(--border-color)', margin: '0 4px' }}></div>
           <button className="danger-btn" onClick={handleClear}>🗑️ Clear</button>
@@ -815,7 +817,17 @@ function App() {
         )}
         {isInfoModalOpen && (
           <InfoModal 
-            onClose={() => setIsInfoModalOpen(false)}
+            onClose={() => setIsInfoModalOpen(false)} 
+          />
+        )}
+        
+        {isImportModalOpen && (
+          <ImportWorkspaceModal
+            onClose={() => setIsImportModalOpen(false)}
+            onConfirm={() => {
+              setIsImportModalOpen(false);
+              fileInputRef.current?.click();
+            }}
           />
         )}
       </div>

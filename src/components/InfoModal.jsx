@@ -31,25 +31,6 @@ const InfoModal = ({ onClose }) => {
           </button>
         </div>
 
-        {/* Workspace Warning Banner */}
-        <div style={{
-          backgroundColor: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)',
-          borderRadius: '8px', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: '8px'
-        }}>
-          <div style={{ fontWeight: 600, color: 'var(--accent-color)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            📦 Workspace (Çalışma Alanı) Bilgisi
-          </div>
-          <p style={{ margin: 0, fontSize: '13px', lineHeight: '1.5', color: '#cbd5e1' }}>
-            Eğer elinizde önceden kaydedilmiş bir <strong>railsort-workspace-file.zip</strong> dosyası varsa, üst menüdeki <strong>📥 Import Workspace (.zip)</strong> butonu ile tüm seviyelerinizi anında içeri aktarabilirsiniz.
-          </p>
-          <p style={{ margin: 0, fontSize: '13px', lineHeight: '1.5', color: '#cbd5e1' }}>
-            📥 <strong>Örnek Seviye Paketleri:</strong> Hazır 20 bölümlük örnek seviye paketini <a href="https://github.com/karagozkk/rail-sort-editor/releases" target="_blank" rel="noreferrer" style={{ color: '#38bdf8', textDecoration: 'underline' }}>GitHub Releases</a> sayfasından indirebilirsiniz.
-          </p>
-          <p style={{ margin: 0, fontSize: '12px', lineHeight: '1.4', color: '#94a3b8' }}>
-            💡 <em>Çalışmalarınız otomatik olarak tarayıcınızda saklanır. Ancak tarayıcı geçmişi veya çerezleri temizlendiğinde kaybolmaması için düzenli aralıklarla <strong>📤 Export Workspace (.zip)</strong> yapmanız önerilir.</em>
-          </p>
-        </div>
-
         {/* Shortcuts Section */}
         <div>
           <h3 style={{ fontSize: '15px', marginBottom: '10px', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>

@@ -3,7 +3,7 @@
 **Railsort Level Editor**, Unity tabanlı *Railsort* tren ve bulmaca oyunu için geliştirilmiş, tamamen tarayıcı üzerinden çalışan (Client-Side) modern ve görsel bir seviye tasarım aracıdır.
 
 🌐 **Canlı Demo:** [https://rail-sort-editor.vercel.app/](https://rail-sort-editor.vercel.app/)  
-📦 **Örnek Seviye Paketleri:** [GitHub Releases](https://github.com/karagozkk/rail-sort-editor/releases) sayfasından `railsort-workspace-file.zip` dosyasını indirebilir ve editörden **Import Workspace** diyerek 20 hazır bölümü yükleyebilirsiniz.
+📦 **Örnek Seviye Paketleri:** [GitHub Releases](https://github.com/karagozkk/rail-sort-editor/releases) sayfasından `railsort-workspace-file.zip` dosyasını indirebilir ve editörden **Import Workspace** diyerek 30 hazır bölümü yükleyebilirsiniz.
 
 ---
 
