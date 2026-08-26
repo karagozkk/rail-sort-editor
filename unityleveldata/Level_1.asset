@@ -19,11 +19,11 @@ MonoBehaviour:
   themeVar: 1
   cameraOrthographicSize: 22.9
   splineCorners:
-  - {x: 0, y: 0, z: 39.599999999999994}
+  - {x: 0, y: 0, z: 39.6}
   - {x: 0, y: 0, z: 6.6}
   - {x: 33, y: 0, z: 6.6}
-  - {x: 33, y: 0, z: 39.599999999999994}
-  cornerRadius: 2
+  - {x: 33, y: 0, z: 39.6}
+  cornerRadius: 3
   isSplineClosed: 1
   depots:
   - depotId: Depot_1
@@ -43,27 +43,27 @@ MonoBehaviour:
       isHidden: 0
     - slotIndex: 2
       wagonColor: 1
-      wagonType: 2
+      wagonType: 1
       isHidden: 0
     - slotIndex: 3
       wagonColor: 1
-      wagonType: 2
+      wagonType: 1
       isHidden: 0
     - slotIndex: 4
       wagonColor: 1
-      wagonType: 2
+      wagonType: 1
       isHidden: 0
     - slotIndex: 5
       wagonColor: 1
-      wagonType: 2
+      wagonType: 1
       isHidden: 0
     - slotIndex: 6
       wagonColor: 1
-      wagonType: 2
+      wagonType: 1
       isHidden: 0
     - slotIndex: 7
       wagonColor: 1
-      wagonType: 2
+      wagonType: 1
       isHidden: 0
   - depotId: Depot_2
     position: {x: 23.099999999999998, y: 0, z: 23.099999999999998}
@@ -98,9 +98,9 @@ MonoBehaviour:
       isHidden: 0
     - slotIndex: 6
       wagonColor: 1
-      wagonType: 2
+      wagonType: 1
       isHidden: 0
     - slotIndex: 7
       wagonColor: 1
-      wagonType: 2
+      wagonType: 1
       isHidden: 0

@@ -23,7 +23,7 @@ MonoBehaviour:
   - {x: 33, y: 0, z: 52.8}
   - {x: 33, y: 0, z: 6.6}
   - {x: 0, y: 0, z: 6.6}
-  cornerRadius: 2
+  cornerRadius: 3
   isSplineClosed: 1
   depots:
   - depotId: Depot_1
@@ -35,35 +35,35 @@ MonoBehaviour:
     wagons:
     - slotIndex: 0
       wagonColor: 4
-      wagonType: 2
+      wagonType: 0
       isHidden: 0
     - slotIndex: 1
       wagonColor: 4
-      wagonType: 2
+      wagonType: 0
       isHidden: 0
     - slotIndex: 2
       wagonColor: 4
-      wagonType: 2
+      wagonType: 0
       isHidden: 0
     - slotIndex: 3
       wagonColor: 4
-      wagonType: 2
+      wagonType: 0
       isHidden: 0
     - slotIndex: 4
       wagonColor: 1
-      wagonType: 3
+      wagonType: 2
       isHidden: 0
     - slotIndex: 5
       wagonColor: 1
-      wagonType: 3
+      wagonType: 2
       isHidden: 0
     - slotIndex: 6
       wagonColor: 1
-      wagonType: 3
+      wagonType: 2
       isHidden: 0
     - slotIndex: 7
       wagonColor: 1
-      wagonType: 3
+      wagonType: 2
       isHidden: 0
   - depotId: Depot_2
     position: {x: 16.5, y: 0, z: 29.7}
@@ -90,19 +90,19 @@ MonoBehaviour:
       isHidden: 0
     - slotIndex: 4
       wagonColor: 4
-      wagonType: 2
+      wagonType: 0
       isHidden: 0
     - slotIndex: 5
       wagonColor: 4
-      wagonType: 2
+      wagonType: 0
       isHidden: 0
     - slotIndex: 6
       wagonColor: 4
-      wagonType: 2
+      wagonType: 0
       isHidden: 0
     - slotIndex: 7
       wagonColor: 4
-      wagonType: 2
+      wagonType: 0
       isHidden: 0
   - depotId: Depot_3
     position: {x: 16.5, y: 0, z: 16.5}
@@ -113,19 +113,19 @@ MonoBehaviour:
     wagons:
     - slotIndex: 0
       wagonColor: 1
-      wagonType: 3
+      wagonType: 2
       isHidden: 0
     - slotIndex: 1
       wagonColor: 1
-      wagonType: 3
+      wagonType: 2
       isHidden: 0
     - slotIndex: 2
       wagonColor: 1
-      wagonType: 3
+      wagonType: 2
       isHidden: 0
     - slotIndex: 3
       wagonColor: 1
-      wagonType: 3
+      wagonType: 2
       isHidden: 0
     - slotIndex: 4
       wagonColor: 0
