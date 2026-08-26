@@ -25,7 +25,7 @@ const Grid = ({ gridSize, isHalfGrid, spline, depots, onCellClick, onNodeClick, 
     const N = spline.nodes.length;
     const points = spline.nodes.map(n => ({
       x: n.x * CELL_SIZE + nodeOffset,
-      y: (gridSize.height - n.z) * CELL_SIZE + nodeOffset
+      y: (gridSize.height - n.z - step) * CELL_SIZE + nodeOffset
     }));
 
     if (N < 2) return '';
@@ -158,7 +158,7 @@ const Grid = ({ gridSize, isHalfGrid, spline, depots, onCellClick, onNodeClick, 
             <circle 
               key={`node-${i}`}
               cx={node.x * CELL_SIZE + nodeOffset} 
-              cy={(gridSize.height - node.z) * CELL_SIZE + nodeOffset} 
+              cy={(gridSize.height - node.z - step) * CELL_SIZE + nodeOffset} 
               r={8} 
               fill={selectedTool === 'eraser' ? 'var(--danger-color)' : 'var(--accent-color)'}
               stroke="#fff"
@@ -179,7 +179,7 @@ const Grid = ({ gridSize, isHalfGrid, spline, depots, onCellClick, onNodeClick, 
             </circle>
             <text 
               x={node.x * CELL_SIZE + nodeOffset} 
-              y={(gridSize.height - node.z) * CELL_SIZE + nodeOffset - 12}
+              y={(gridSize.height - node.z - step) * CELL_SIZE + nodeOffset - 12}
               fill="white"
               fontSize="12"
               fontWeight="bold"
