@@ -65,7 +65,7 @@ export const exportToUnity = async (allLevels, multipliers) => {
     lines.push(`  cameraOrthographicSize: 22.9`);
     lines.push(`  splineCorners:`);
     (levelData.spline?.nodes || []).forEach(node => {
-      lines.push(`  - {x: ${node.x * gridMultiplier}, y: 0, z: ${node.z * gridMultiplier}}`);
+      lines.push(`  - {x: ${node.x * gridMultiplier}, y: 0, z: ${(node.z + 0.5) * gridMultiplier}}`);
     });
     lines.push(`  cornerRadius: ${(levelData.spline?.radius || 1) * cornerMultiplier}`);
     lines.push(`  isSplineClosed: ${levelData.spline?.isClosed ? 1 : 0}`);
