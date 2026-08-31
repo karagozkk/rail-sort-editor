@@ -333,7 +333,7 @@ const Grid = ({ gridSize, isHalfGrid, spline, depots, onCellClick, onNodeClick, 
             {/* Lock Icon Overlapping Color Square */}
             {depot.isLocked && (
               <div style={{
-                position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)',
+                position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                 width: '20px', height: '20px',
                 backgroundColor: carColors?.find(c => c.id === depot.lockColor)?.color || 'red',
                 border: '2px solid white', borderRadius: '4px',
