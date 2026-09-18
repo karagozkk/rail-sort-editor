@@ -119,7 +119,11 @@ export const calculateDifficulty = (levelData) => {
     adjustedEntropy = Math.max(0, colorEntropy - (errorMargin - 8));
   }
 
-  let cognitiveScore = (hiddenCars * 1.5) + (lockedDepots * 3) + adjustedEntropy;
+  // Hidden cars usually come in pairs (blocks of same color).
+  // Therefore, uncertainty scales with the number of hidden pairs, not individual cars.
+  let hiddenBlocks = Math.ceil(hiddenCars / 2);
+  let cognitiveScore = hiddenBlocks + (lockedDepots * 2) + adjustedEntropy;
+  
   let cognitiveLoadStr = 'Low';
   if (cognitiveScore > 15) cognitiveLoadStr = 'Extreme';
   else if (cognitiveScore > 10) cognitiveLoadStr = 'High';
@@ -138,10 +142,9 @@ export const calculateDifficulty = (levelData) => {
   else if (errorMargin >= 10 && errorMargin < 15) capacityModifier = -2;
   else if (errorMargin >= 15) capacityModifier = -4;
 
-  // Penalty for cognitive load (scales with hidden cars and locked depots)
-  // 1 hidden car = 1.5 score. 1 locked depot = 3 score.
-  // 10 hidden cars = 15 score -> +6 difficulty points
-  let cogPenalty = cognitiveScore / 2.5;
+  // Penalty for cognitive load (scales with hidden blocks and visible entropy)
+  // E.g., 10 visible blocks + 4 hidden blocks + 1 locked depot = 16 score -> ~5 difficulty points
+  let cogPenalty = cognitiveScore / 3.5;
 
   let finalScore = Math.round(baseScore + capacityModifier + cogPenalty);
   
