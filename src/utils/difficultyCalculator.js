@@ -138,8 +138,10 @@ export const calculateDifficulty = (levelData) => {
   else if (errorMargin >= 10 && errorMargin < 15) capacityModifier = -2;
   else if (errorMargin >= 15) capacityModifier = -4;
 
-  // Penalty for cognitive load (up to 5 points)
-  let cogPenalty = Math.min(5, cognitiveScore / 3);
+  // Penalty for cognitive load (scales with hidden cars and locked depots)
+  // 1 hidden car = 1.5 score. 1 locked depot = 3 score.
+  // 10 hidden cars = 15 score -> +6 difficulty points
+  let cogPenalty = cognitiveScore / 2.5;
 
   let finalScore = Math.round(baseScore + capacityModifier + cogPenalty);
   
