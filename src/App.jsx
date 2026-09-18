@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import './App.css';
 import Toolbar from './components/Toolbar';
 import Grid from './components/Grid';
@@ -8,6 +8,7 @@ import InfoModal from './components/InfoModal';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { exportToUnity } from './utils/exportUnity';
+import { calculateDifficulty } from './utils/difficultyCalculator';
 
 export const carColors = [
   { id: 1, name: 'red', color: '#ff0000ff' },
@@ -137,6 +138,9 @@ function App() {
     setHasUnsavedChanges(false);
   }, [selectedLevel]);
 
+  const difficulty = useMemo(() => {
+    return calculateDifficulty({ depots, trainCapacity });
+  }, [depots, trainCapacity]);
 
   const saveHistory = () => {
     setHasUnsavedChanges(true);
@@ -758,11 +762,57 @@ function App() {
               cursor: 'pointer',
               boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
               transition: 'all 0.2s ease',
-              padding: 0
             }}
           >
             ℹ️
           </button>
+          
+          <div 
+            className="difficulty-badge tooltip-container"
+            style={{
+              position: 'absolute',
+              top: '64px',
+              left: '16px',
+              zIndex: 100,
+              padding: '6px 12px',
+              borderRadius: '20px',
+              backgroundColor: 'var(--panel-bg)',
+              border: '1px solid var(--border-color)',
+              color: 'var(--text-primary)',
+              fontSize: '12px',
+              fontWeight: 'bold',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+              cursor: 'help'
+            }}
+          >
+            Difficulty: {difficulty.score}/20
+            <div className="tooltip-content" style={{
+              position: 'absolute',
+              top: '100%',
+              left: '0',
+              marginTop: '8px',
+              backgroundColor: 'var(--bg-color)',
+              border: '1px solid var(--border-color)',
+              padding: '12px',
+              borderRadius: '8px',
+              width: '200px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.6)',
+              display: 'none',
+              zIndex: 101,
+              fontWeight: 'normal'
+            }}>
+              <div style={{ marginBottom: '8px', paddingBottom: '8px', borderBottom: '1px solid var(--border-color)' }}>
+                <strong>Difficulty Metrics</strong>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px' }}>
+                <span>Min Moves:</span> <span style={{ color: 'var(--accent-color)' }}>~{difficulty.metrics.minMoves}</span>
+                <span>Error Margin:</span> <span style={{ color: difficulty.metrics.errorMargin < 2 ? 'var(--danger-color)' : 'var(--accent-color)' }}>{difficulty.metrics.errorMargin} slots</span>
+                <span>Thinking:</span> <span>{difficulty.metrics.cognitiveLoad}</span>
+                <span>Empty Slots:</span> <span>{difficulty.metrics.emptySlots}</span>
+              </div>
+            </div>
+          </div>
+
           <Grid
             gridSize={gridSize}
             isHalfGrid={isHalfGrid}
