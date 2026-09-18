@@ -705,6 +705,38 @@ function App() {
       <header className="header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <h1>Railsort Level Editör</h1>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <button
+              className="secondary-btn"
+              onClick={() => {
+                const currentIndex = levelsList.indexOf(selectedLevel);
+                if (currentIndex > 0) {
+                  if (hasUnsavedChanges && !window.confirm("Bölümde kaydedilmemiş değişiklikler var! Değiştirmek istediğinize emin misiniz? Kaydedilmeyen veriler kaybolacak.")) return;
+                  setSelectedLevel(levelsList[currentIndex - 1]);
+                }
+              }}
+              disabled={levelsList.indexOf(selectedLevel) <= 0}
+              style={{ padding: '6px 10px' }}
+              title="Önceki Bölüm"
+            >
+              ◀
+            </button>
+            <button
+              className="secondary-btn"
+              onClick={() => {
+                const currentIndex = levelsList.indexOf(selectedLevel);
+                if (currentIndex < levelsList.length - 1) {
+                  if (hasUnsavedChanges && !window.confirm("Bölümde kaydedilmemiş değişiklikler var! Değiştirmek istediğinize emin misiniz? Kaydedilmeyen veriler kaybolacak.")) return;
+                  setSelectedLevel(levelsList[currentIndex + 1]);
+                }
+              }}
+              disabled={levelsList.indexOf(selectedLevel) === levelsList.length - 1 || levelsList.indexOf(selectedLevel) === -1}
+              style={{ padding: '6px 10px' }}
+              title="Sonraki Bölüm"
+            >
+              ▶
+            </button>
+          </div>
           <select
             value={selectedLevel}
             onChange={(e) => {
