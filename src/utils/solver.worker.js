@@ -141,22 +141,27 @@ self.onmessage = function(e) {
                 // Cannot put into locked depot if colors don't match
                 if (lockRequirements[i] && lockRequirements[i] !== color) continue;
 
-                // Create new state
-                const nextDepots = current.depots.map(arr => [...arr]);
-                nextDepots[i].push(color);
-                
-                const nextTrain = { ...current.train };
-                nextTrain[color]--;
-                
-                const h = hashState(nextDepots, nextTrain);
-                if (!visited.has(h)) {
-                  visited.add(h);
-                  queue.push({
-                    depots: nextDepots,
-                    train: nextTrain,
-                    trainCount: current.trainCount - 1,
-                    moves: current.moves + 1
-                  });
+                // Move as many cars of this color as possible to the depot
+                const availableSpaces = depotCapacities[i] - d.length;
+                const toPut = Math.min(count, availableSpaces);
+
+                if (toPut > 0) {
+                  const nextDepots = current.depots.map(arr => [...arr]);
+                  for(let m = 0; m < toPut; m++) nextDepots[i].push(color);
+                  
+                  const nextTrain = { ...current.train };
+                  nextTrain[color] -= toPut;
+                  
+                  const h = hashState(nextDepots, nextTrain);
+                  if (!visited.has(h)) {
+                    visited.add(h);
+                    queue.push({
+                      depots: nextDepots,
+                      train: nextTrain,
+                      trainCount: current.trainCount - toPut,
+                      moves: current.moves // Train to Depot is automatic/free routing, doesn't cost a move
+                    });
+                  }
                 }
               }
             }
