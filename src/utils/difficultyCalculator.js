@@ -21,6 +21,7 @@ export const calculateDifficulty = (levelData) => {
   let lockedDepots = 0;
   let totalSlots = 0;
   let colorEntropy = 0;
+  let minMoves = 0;
 
   // Map to store how many cars of each color exist
   const colorCounts = {};
