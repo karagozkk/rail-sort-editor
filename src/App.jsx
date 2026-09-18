@@ -8,7 +8,9 @@ import InfoModal from './components/InfoModal';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { exportToUnity } from './utils/exportUnity';
+import { parseLevelData, formatLevelData } from './utils/levelParser';
 import { calculateDifficulty } from './utils/difficultyCalculator';
+import { generateSolvablePuzzle } from './utils/autofillGenerator';
 
 export const carColors = [
   { id: 1, name: 'red', color: '#ff0000ff' },
@@ -382,6 +384,12 @@ function App() {
   const updateDepotSettings = (id, newSettings) => {
     saveHistory();
     setDepots(prev => prev.map(d => d.id === id ? { ...d, ...newSettings } : d));
+  };
+
+  const handleAutofill = () => {
+    saveHistory();
+    const newDepots = generateSolvablePuzzle(depots);
+    setDepots(newDepots);
   };
 
   const handleClear = () => {
@@ -797,6 +805,33 @@ function App() {
             }}
           >
             ℹ️
+          </button>
+          
+          <button
+            className="info-btn"
+            onClick={handleAutofill}
+            title="Autofill (Çözülebilir otomatik doldurma)"
+            style={{
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              zIndex: 100,
+              width: '38px',
+              height: '38px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--panel-bg)',
+              border: '1px solid var(--border-color)',
+              color: 'var(--text-primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '18px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            🎲
           </button>
           
           <div 
