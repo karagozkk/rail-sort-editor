@@ -895,6 +895,17 @@ function App() {
                       <>
                         Exact Moves: <strong style={{ color: 'var(--accent-color)' }}>{realisticResult.moves === -1 ? 'Impossible' : (realisticResult.isExact ? realisticResult.moves : `>${realisticResult.moves}`)}</strong><br/>
                         Iterations: {realisticResult.iterations}
+                        {realisticResult.moves !== -1 && (
+                          <div style={{ marginTop: '4px', paddingTop: '4px', borderTop: '1px solid var(--border-color)', fontSize: '12px' }}>
+                            Realistic Score: <strong style={{ color: 'var(--accent-color)' }}>
+                              {Math.max(1, Math.min(20, Math.round(
+                                realisticResult.moves * 1.5 + 
+                                Math.max(0, 5 - difficulty.metrics.errorMargin) * 1.5 + 
+                                (difficulty.metrics.cognitiveLoad === 'Extreme' ? 5 : difficulty.metrics.cognitiveLoad === 'High' ? 4 : difficulty.metrics.cognitiveLoad === 'Medium' ? 2 : 0)
+                              )))}/20
+                            </strong>
+                          </div>
+                        )}
                       </>
                     )}
                   </div>

@@ -90,7 +90,7 @@ self.onmessage = function(e) {
   const visited = new Set();
   visited.add(hashState(initialDepots, initialTrain));
   
-  const MAX_ITERATIONS = 30000;
+  const MAX_ITERATIONS = 200000;
   let iterations = 0;
   let bestDepth = 0;
 
