@@ -9,19 +9,19 @@
     "nodes": [
       {
         "x": 0,
-        "z": 14
+        "z": 13.5
       },
       {
         "x": 0,
-        "z": 1
+        "z": 0.5
       },
       {
         "x": 5,
-        "z": 1
+        "z": 0.5
       },
       {
         "x": 5,
-        "z": 14
+        "z": 13.5
       }
     ],
     "thickness": 2,
@@ -269,6 +269,14 @@
         },
         "slot_7": {
           "color": 1,
+          "isHidden": false
+        },
+        "slot_4": {
+          "color": 6,
+          "isHidden": false
+        },
+        "slot_5": {
+          "color": 6,
           "isHidden": false
         }
       }

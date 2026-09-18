@@ -9,19 +9,19 @@
     "nodes": [
       {
         "x": 0,
-        "z": 14
+        "z": 17.5
       },
       {
         "x": 5,
-        "z": 14
+        "z": 17.5
       },
       {
         "x": 5,
-        "z": 5
+        "z": 0.5
       },
       {
         "x": 0,
-        "z": 5
+        "z": 0.5
       }
     ],
     "thickness": 2,
@@ -31,90 +31,6 @@
   "depots": [
     {
       "id": "depot_1",
-      "x": 2,
-      "z": 16,
-      "entryDirection": "bottom",
-      "isLocked": false,
-      "lockColor": null,
-      "cars": {
-        "slot_6": {
-          "color": 4,
-          "isHidden": false
-        },
-        "slot_7": {
-          "color": 4,
-          "isHidden": false
-        },
-        "slot_4": {
-          "color": 5,
-          "isHidden": true
-        },
-        "slot_5": {
-          "color": 5,
-          "isHidden": true
-        },
-        "slot_2": {
-          "color": 10,
-          "isHidden": true
-        },
-        "slot_3": {
-          "color": 10,
-          "isHidden": true
-        },
-        "slot_0": {
-          "color": 3,
-          "isHidden": true
-        },
-        "slot_1": {
-          "color": 3,
-          "isHidden": true
-        }
-      }
-    },
-    {
-      "id": "depot_2",
-      "x": 4,
-      "z": 16,
-      "entryDirection": "bottom",
-      "isLocked": false,
-      "lockColor": null,
-      "cars": {
-        "slot_6": {
-          "color": 10,
-          "isHidden": false
-        },
-        "slot_7": {
-          "color": 10,
-          "isHidden": false
-        },
-        "slot_4": {
-          "color": 10,
-          "isHidden": true
-        },
-        "slot_5": {
-          "color": 10,
-          "isHidden": true
-        },
-        "slot_2": {
-          "color": 1,
-          "isHidden": true
-        },
-        "slot_3": {
-          "color": 1,
-          "isHidden": true
-        },
-        "slot_0": {
-          "color": 5,
-          "isHidden": true
-        },
-        "slot_1": {
-          "color": 5,
-          "isHidden": true
-        }
-      }
-    },
-    {
-      "id": "depot_3",
       "x": 3,
       "z": 12,
       "entryDirection": "right",
@@ -122,11 +38,11 @@
       "lockColor": null,
       "cars": {
         "slot_6": {
-          "color": 11,
+          "color": 5,
           "isHidden": false
         },
         "slot_7": {
-          "color": 11,
+          "color": 5,
           "isHidden": false
         },
         "slot_4": {
@@ -138,19 +54,103 @@
           "isHidden": true
         },
         "slot_2": {
-          "color": 2,
+          "color": 4,
           "isHidden": true
         },
         "slot_3": {
-          "color": 2,
+          "color": 4,
           "isHidden": true
         },
         "slot_0": {
-          "color": 11,
+          "color": 7,
           "isHidden": true
         },
         "slot_1": {
-          "color": 11,
+          "color": 7,
+          "isHidden": true
+        }
+      }
+    },
+    {
+      "id": "depot_2",
+      "x": 3,
+      "z": 6,
+      "entryDirection": "right",
+      "isLocked": false,
+      "lockColor": null,
+      "cars": {
+        "slot_6": {
+          "color": 4,
+          "isHidden": false
+        },
+        "slot_7": {
+          "color": 4,
+          "isHidden": false
+        },
+        "slot_4": {
+          "color": 4,
+          "isHidden": true
+        },
+        "slot_5": {
+          "color": 4,
+          "isHidden": true
+        },
+        "slot_2": {
+          "color": 8,
+          "isHidden": true
+        },
+        "slot_3": {
+          "color": 8,
+          "isHidden": true
+        },
+        "slot_0": {
+          "color": 1,
+          "isHidden": true
+        },
+        "slot_1": {
+          "color": 1,
+          "isHidden": true
+        }
+      }
+    },
+    {
+      "id": "depot_3",
+      "x": 3,
+      "z": 14,
+      "entryDirection": "right",
+      "isLocked": false,
+      "lockColor": null,
+      "cars": {
+        "slot_6": {
+          "color": 9,
+          "isHidden": false
+        },
+        "slot_7": {
+          "color": 9,
+          "isHidden": false
+        },
+        "slot_4": {
+          "color": 8,
+          "isHidden": true
+        },
+        "slot_5": {
+          "color": 8,
+          "isHidden": true
+        },
+        "slot_2": {
+          "color": 3,
+          "isHidden": true
+        },
+        "slot_3": {
+          "color": 3,
+          "isHidden": true
+        },
+        "slot_0": {
+          "color": 9,
+          "isHidden": true
+        },
+        "slot_1": {
+          "color": 9,
           "isHidden": true
         }
       }
@@ -164,35 +164,35 @@
       "lockColor": null,
       "cars": {
         "slot_6": {
-          "color": 11,
+          "color": 9,
           "isHidden": false
         },
         "slot_7": {
-          "color": 11,
+          "color": 9,
           "isHidden": false
         },
         "slot_0": {
-          "color": 6,
+          "color": 2,
           "isHidden": false
         },
         "slot_1": {
-          "color": 6,
+          "color": 2,
           "isHidden": false
         },
         "slot_2": {
-          "color": 6,
+          "color": 2,
           "isHidden": false
         },
         "slot_3": {
-          "color": 6,
+          "color": 2,
           "isHidden": false
         },
         "slot_4": {
-          "color": 3,
+          "color": 7,
           "isHidden": false
         },
         "slot_5": {
-          "color": 3,
+          "color": 7,
           "isHidden": false
         }
       }
@@ -200,41 +200,41 @@
     {
       "id": "depot_5",
       "x": 3,
-      "z": 8,
+      "z": 16,
       "entryDirection": "right",
       "isLocked": false,
       "lockColor": null,
       "cars": {
         "slot_6": {
-          "color": 4,
+          "color": 5,
           "isHidden": false
         },
         "slot_7": {
-          "color": 4,
+          "color": 5,
           "isHidden": false
         },
         "slot_4": {
-          "color": 3,
+          "color": 7,
           "isHidden": true
         },
         "slot_5": {
-          "color": 3,
+          "color": 7,
           "isHidden": true
         },
         "slot_2": {
-          "color": 5,
+          "color": 1,
           "isHidden": true
         },
         "slot_3": {
-          "color": 5,
+          "color": 1,
           "isHidden": true
         },
         "slot_0": {
-          "color": 3,
+          "color": 7,
           "isHidden": true
         },
         "slot_1": {
-          "color": 3,
+          "color": 7,
           "isHidden": true
         }
       }
@@ -242,125 +242,125 @@
     {
       "id": "depot_6",
       "x": 3,
-      "z": 6,
+      "z": 2,
       "entryDirection": "right",
       "isLocked": false,
       "lockColor": null,
       "cars": {
         "slot_4": {
-          "color": 4,
+          "color": 5,
           "isHidden": false
         },
         "slot_5": {
-          "color": 4,
+          "color": 5,
           "isHidden": false
         },
         "slot_0": {
-          "color": 10,
+          "color": 4,
           "isHidden": false
         },
         "slot_1": {
-          "color": 10,
+          "color": 4,
           "isHidden": false
         },
         "slot_2": {
-          "color": 5,
+          "color": 1,
           "isHidden": false
         },
         "slot_3": {
-          "color": 5,
+          "color": 1,
           "isHidden": false
         },
         "slot_6": {
-          "color": 2,
+          "color": 3,
           "isHidden": false
         },
         "slot_7": {
-          "color": 2,
+          "color": 3,
           "isHidden": false
         }
       }
     },
     {
       "id": "depot_7",
-      "x": 4,
-      "z": 2,
-      "entryDirection": "top",
+      "x": 3,
+      "z": 4,
+      "entryDirection": "right",
       "isLocked": false,
       "lockColor": null,
       "cars": {
         "slot_6": {
-          "color": 1,
+          "color": 8,
           "isHidden": false
         },
         "slot_7": {
-          "color": 1,
+          "color": 8,
           "isHidden": false
         },
         "slot_4": {
-          "color": 2,
+          "color": 3,
           "isHidden": true
         },
         "slot_5": {
-          "color": 2,
+          "color": 3,
           "isHidden": true
         },
         "slot_2": {
-          "color": 4,
+          "color": 5,
           "isHidden": true
         },
         "slot_3": {
-          "color": 4,
+          "color": 5,
           "isHidden": true
         },
         "slot_0": {
-          "color": 1,
+          "color": 8,
           "isHidden": true
         },
         "slot_1": {
-          "color": 1,
+          "color": 8,
           "isHidden": true
         }
       }
     },
     {
       "id": "depot_8",
-      "x": 2,
-      "z": 2,
-      "entryDirection": "top",
+      "x": 3,
+      "z": 8,
+      "entryDirection": "right",
       "isLocked": false,
       "lockColor": null,
       "cars": {
         "slot_6": {
-          "color": 6,
+          "color": 2,
           "isHidden": false
         },
         "slot_7": {
-          "color": 6,
+          "color": 2,
           "isHidden": false
         },
         "slot_4": {
-          "color": 11,
+          "color": 9,
           "isHidden": true
         },
         "slot_5": {
-          "color": 11,
+          "color": 9,
           "isHidden": true
         },
         "slot_2": {
-          "color": 6,
+          "color": 2,
           "isHidden": true
         },
         "slot_3": {
-          "color": 6,
+          "color": 2,
           "isHidden": true
         },
         "slot_0": {
-          "color": 2,
+          "color": 3,
           "isHidden": true
         },
         "slot_1": {
-          "color": 2,
+          "color": 3,
           "isHidden": true
         }
       }

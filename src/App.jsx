@@ -8,7 +8,6 @@ import InfoModal from './components/InfoModal';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { exportToUnity } from './utils/exportUnity';
-import { parseLevelData, formatLevelData } from './utils/levelParser';
 import { calculateDifficulty } from './utils/difficultyCalculator';
 import { generateSolvablePuzzle } from './utils/autofillGenerator';
 
