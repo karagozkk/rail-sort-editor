@@ -136,5 +136,13 @@ export const generateSolvablePuzzle = (currentDepots) => {
     }
   }
 
+  // 4. Ensure frontmost pairs are NEVER hidden.
+  // The front of the depot is the highest slot index.
+  depots.forEach((d, i) => {
+    const cap = depotCapacities[i];
+    if (d.cars[`slot_${cap - 1}`]) d.cars[`slot_${cap - 1}`].isHidden = false;
+    if (d.cars[`slot_${cap - 2}`]) d.cars[`slot_${cap - 2}`].isHidden = false;
+  });
+
   return depots;
 };
