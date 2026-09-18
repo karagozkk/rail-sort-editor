@@ -60,6 +60,21 @@ export const generateSolvablePuzzle = (currentDepots) => {
     let currentDepotOccupancy = depots.map(() => 0);
     let tempDepots = JSON.parse(JSON.stringify(depots));
     
+    // Calculate lock tiers to prevent deadlocks.
+    // lockTier[color] = the MINIMUM index of a depot that is locked with 'color'.
+    // A color 'p' can only be placed in a locked depot 'i' if i < lockTier[p].
+    // This enforces a strict topological order and makes cycles impossible.
+    const lockTiers = {};
+    for (let i = 0; i < tempDepots.length; i++) {
+      const d = tempDepots[i];
+      if (d.isLocked) {
+        const color = parseInt(d.lockColor, 10);
+        if (lockTiers[color] === undefined) {
+          lockTiers[color] = i;
+        }
+      }
+    }
+
     let allPlaced = true;
 
     for (let p of currentPairPool) {
@@ -72,8 +87,18 @@ export const generateSolvablePuzzle = (currentDepots) => {
         
         if (cap - occupancy >= 2) {
           // Check lock constraint
-          if (!d.isLocked || parseInt(d.lockColor, 10) !== p) {
+          if (!d.isLocked) {
             validDepots.push(i);
+          } else {
+            // If the depot is locked, we must ensure it doesn't create a deadlock cycle.
+            // 1. It cannot contain its own lock color.
+            // 2. It can only contain a lock color if its index is strictly less than the lockTier of that color.
+            const pLockTier = lockTiers[p];
+            if (parseInt(d.lockColor, 10) !== p) {
+              if (pLockTier === undefined || i < pLockTier) {
+                validDepots.push(i);
+              }
+            }
           }
         }
       }
