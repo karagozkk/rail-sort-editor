@@ -12,12 +12,24 @@ export const generateSolvablePuzzle = (currentDepots) => {
     return cap;
   });
 
-  // Decide how many colors we can fit. Let's leave at least 8 slots empty.
-  let availableForCars = totalSlots - 8;
-  if (availableForCars < 8) availableForCars = 8; // At least one color if tiny level
-
+  // Use all slots (no requirement to leave 8 slots empty)
+  let availableForCars = totalSlots;
   const numColors = Math.floor(availableForCars / 8);
   const totalCarsToPlace = numColors * 8;
+  
+  // 1.5 Randomize locked depots
+  // We randomly lock 0 to 2 depots, assigning a random color (1 to numColors)
+  depots.forEach(d => {
+    // Reset locks first
+    d.isLocked = false;
+    d.lockColor = null;
+    
+    // 20% chance to lock a depot
+    if (Math.random() < 0.2) {
+      d.isLocked = true;
+      d.lockColor = Math.floor(Math.random() * numColors) + 1;
+    }
+  });
 
   // 2. Create pool of pairs (4 pairs of 2 per color)
   let pairPool = [];
@@ -76,8 +88,10 @@ export const generateSolvablePuzzle = (currentDepots) => {
       const d = tempDepots[chosenDepotIndex];
       const slotIndex = currentDepotOccupancy[chosenDepotIndex];
       
-      d.cars[`slot_${slotIndex}`] = { color: p, isHidden: false };
-      d.cars[`slot_${slotIndex + 1}`] = { color: p, isHidden: false };
+      // Randomize hidden status (e.g. 15% chance to hide the pair)
+      const shouldHide = Math.random() < 0.15;
+      d.cars[`slot_${slotIndex}`] = { color: p, isHidden: shouldHide };
+      d.cars[`slot_${slotIndex + 1}`] = { color: p, isHidden: shouldHide };
       
       currentDepotOccupancy[chosenDepotIndex] += 2;
     }
@@ -96,15 +110,6 @@ export const generateSolvablePuzzle = (currentDepots) => {
       }
     }
   }
-
-  // 4. Set hidden status for locked depots
-  depots.forEach(d => {
-    if (d.isLocked) {
-      Object.keys(d.cars).forEach(slotKey => {
-        d.cars[slotKey].isHidden = true;
-      });
-    }
-  });
 
   return depots;
 };
