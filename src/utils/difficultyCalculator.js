@@ -36,40 +36,67 @@ export const calculateDifficulty = (levelData) => {
     }
 
     const cars = [];
-    // Read cars in order from bottom to top based on entry direction
-    // For simplicity, we just look at the cars object
     if (depot.cars) {
-      Object.keys(depot.cars).forEach(slotKey => {
+      // Sort slot keys to ensure we read from back (slot_0) to front (e.g. slot_7)
+      const sortedKeys = Object.keys(depot.cars).sort((a, b) => {
+        const numA = parseInt(a.replace('slot_', ''), 10);
+        const numB = parseInt(b.replace('slot_', ''), 10);
+        return numA - numB;
+      });
+
+      sortedKeys.forEach(slotKey => {
         const car = depot.cars[slotKey];
         if (car) {
           cars.push(car);
           totalCars++;
           if (car.isHidden) hiddenCars++;
-          
           colorCounts[car.color] = (colorCounts[car.color] || 0) + 1;
         }
       });
     }
 
-    // Calculate entropy (unique colors in this depot)
-    const uniqueColors = new Set(cars.map(c => c.color));
-    if (uniqueColors.size > 1) {
-      colorEntropy += uniqueColors.size;
+    // Group consecutive cars of the same color into blocks
+    const blocks = [];
+    if (cars.length > 0) {
+      let currentBlock = { color: cars[0].color, count: 1 };
+      for (let i = 1; i < cars.length; i++) {
+        if (cars[i].color === currentBlock.color) {
+          currentBlock.count++;
+        } else {
+          blocks.push(currentBlock);
+          currentBlock = { color: cars[i].color, count: 1 };
+        }
+      }
+      blocks.push(currentBlock);
     }
 
-    // Estimate sorted cars: this is a simplification. 
-    // In a real scenario, we'd check if cars at the "bottom" are all the same color.
-    // For heuristic purposes, if a depot has only 1 color and is locked to that color (or not locked),
-    // those cars might be sorted. 
-    if (uniqueColors.size === 1) {
-      const color = Array.from(uniqueColors)[0];
-      if (!depot.isLocked || depot.lockColor === color) {
-        // If it's full, they are definitely sorted
-        if (cars.length === capacity) {
-            sortedCars += cars.length;
-        } else {
-            // Partially sorted
-            sortedCars += cars.length; 
+    // Number of blocks represents how messy the depot is (Entropy)
+    if (blocks.length > 1) {
+      colorEntropy += blocks.length;
+    }
+
+    // Calculate how many blocks need to move.
+    // The base block (at index 0) doesn't need to move if this depot is its final destination.
+    // If it's a locked depot, the lock color determines the final destination color.
+    // If it's unlocked, we assume the base block *could* be sorted if no other depot has a larger block of this color.
+    // For a simpler heuristic, we consider the base block "sorted" if it matches the lock color.
+    if (blocks.length > 0) {
+      const baseBlock = blocks[0];
+      if (!depot.isLocked || depot.lockColor === baseBlock.color) {
+        sortedCars += baseBlock.count;
+      }
+      
+      // Calculate moves for all blocks except potentially the base block (which we just handled)
+      // Actually, every block needs to move if it's not sorted.
+      // A move takes Math.ceil(block.count / effectiveTrainCapacity)
+      const effectiveCap = Math.max(1, trainCapacity);
+      for (let i = 0; i < blocks.length; i++) {
+        const block = blocks[i];
+        const isSortedBase = (i === 0 && (!depot.isLocked || depot.lockColor === block.color));
+        if (!isSortedBase) {
+          // Add 2 moves (out and in) per chunk of the block
+          const chunks = Math.ceil(block.count / effectiveCap);
+          minMoves += chunks * 2;
         }
       }
     }
@@ -78,12 +105,7 @@ export const calculateDifficulty = (levelData) => {
   const emptySlots = totalSlots - totalCars;
   const unsortedCars = totalCars - sortedCars;
 
-  // 1. Min Moves: Each unsorted car needs at least 2 moves (out and in).
-  // If cars are deeply mixed, it takes more. Add a penalty for color entropy.
-  let minMoves = unsortedCars * 2 + colorEntropy * 2;
-
   // 2. Error Margin: Train capacity + empty slots.
-  // The fewer buffer slots available, the tighter the puzzle.
   const requiredBuffer = Math.max(1, Math.floor(unsortedCars / 4));
   let errorMargin = trainCapacity + emptySlots - requiredBuffer;
   if (errorMargin < 0) errorMargin = 0;
@@ -96,7 +118,6 @@ export const calculateDifficulty = (levelData) => {
   else if (cognitiveScore > 5) cognitiveLoadStr = 'Medium';
 
   // Calculate Final Score (1-20)
-  // Base score from unsorted cars (up to 10 points)
   let baseScore = Math.min(10, (unsortedCars / Math.max(1, totalCars)) * 10);
   
   // Penalty for low error margin (up to 5 points)
