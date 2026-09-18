@@ -61,9 +61,6 @@ function App() {
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [isDifficultyMetricsOpen, setIsDifficultyMetricsOpen] = useState(false);
-  const [isRealisticCalculating, setIsRealisticCalculating] = useState(false);
-  const [realisticResult, setRealisticResult] = useState(null);
   const [lastActiveDepotId, setLastActiveDepotId] = useState(null);
   const [lastActiveObject, setLastActiveObject] = useState(null);
   const [lastActiveWagons, setLastActiveWagons] = useState(null);
@@ -144,36 +141,6 @@ function App() {
   const difficulty = useMemo(() => {
     return calculateDifficulty({ depots, trainCapacity });
   }, [depots, trainCapacity]);
-
-  useEffect(() => {
-    setRealisticResult(null);
-  }, [depots, trainCapacity]);
-
-  const runRealisticCalculation = () => {
-    setIsRealisticCalculating(true);
-    setRealisticResult(null);
-
-    const worker = new Worker(new URL('./utils/solver.worker.js', import.meta.url), { type: 'module' });
-    
-    worker.onmessage = (e) => {
-      if (e.data.status === 'success') {
-        setRealisticResult(e.data.result);
-      } else {
-        setRealisticResult({ error: e.data.message });
-      }
-      setIsRealisticCalculating(false);
-      worker.terminate();
-    };
-
-    worker.onerror = (err) => {
-      console.error('Worker error:', err);
-      setRealisticResult({ error: 'Worker failed to run.' });
-      setIsRealisticCalculating(false);
-      worker.terminate();
-    };
-
-    worker.postMessage({ levelData: { depots, trainCapacity } });
-  };
 
   const saveHistory = () => {
     setHasUnsavedChanges(true);
@@ -833,8 +800,7 @@ function App() {
           </button>
           
           <div 
-            className={`difficulty-badge tooltip-container ${isDifficultyMetricsOpen ? 'open' : ''}`}
-            onClick={() => setIsDifficultyMetricsOpen(!isDifficultyMetricsOpen)}
+            className="difficulty-badge tooltip-container"
             style={{
               position: 'absolute',
               top: '64px',
@@ -848,7 +814,7 @@ function App() {
               fontSize: '12px',
               fontWeight: 'bold',
               boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
-              cursor: 'pointer'
+              cursor: 'help'
             }}
           >
             Difficulty: {difficulty.score}/20
@@ -861,55 +827,20 @@ function App() {
               border: '1px solid var(--border-color)',
               padding: '12px',
               borderRadius: '8px',
-              width: '240px',
+              width: '200px',
               boxShadow: '0 8px 24px rgba(0,0,0,0.6)',
               display: 'none',
               zIndex: 101,
-              fontWeight: 'normal',
-              cursor: 'default'
-            }} onClick={(e) => e.stopPropagation()}>
+              fontWeight: 'normal'
+            }}>
               <div style={{ marginBottom: '8px', paddingBottom: '8px', borderBottom: '1px solid var(--border-color)' }}>
                 <strong>Difficulty Metrics</strong>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px', marginBottom: '12px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px' }}>
                 <span>Min Moves (Est.):</span> <span style={{ color: 'var(--accent-color)' }}>~{difficulty.metrics.minMoves}</span>
                 <span>Error Margin:</span> <span style={{ color: difficulty.metrics.errorMargin < 2 ? 'var(--danger-color)' : 'var(--accent-color)' }}>{difficulty.metrics.errorMargin} slots</span>
                 <span>Thinking:</span> <span>{difficulty.metrics.cognitiveLoad}</span>
                 <span>Empty Slots:</span> <span>{difficulty.metrics.emptySlots}</span>
-              </div>
-              
-              <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
-                <button 
-                  className="secondary-btn" 
-                  style={{ width: '100%', padding: '6px' }}
-                  onClick={runRealisticCalculation}
-                  disabled={isRealisticCalculating}
-                >
-                  {isRealisticCalculating ? 'Calculating...' : 'Run Realistic Calculation'}
-                </button>
-                {realisticResult && (
-                  <div style={{ marginTop: '8px', fontSize: '11px', color: 'var(--text-secondary)' }}>
-                    {realisticResult.error ? (
-                      <span style={{ color: 'var(--danger-color)' }}>Error: {realisticResult.error}</span>
-                    ) : (
-                      <>
-                        Exact Moves: <strong style={{ color: 'var(--accent-color)' }}>{realisticResult.moves === -1 ? 'Impossible' : (realisticResult.isExact ? realisticResult.moves : `>${realisticResult.moves}`)}</strong><br/>
-                        Iterations: {realisticResult.iterations}
-                        {realisticResult.moves !== -1 && (
-                          <div style={{ marginTop: '4px', paddingTop: '4px', borderTop: '1px solid var(--border-color)', fontSize: '12px' }}>
-                            Realistic Score: <strong style={{ color: 'var(--accent-color)' }}>
-                              {Math.max(1, Math.min(20, Math.round(
-                                realisticResult.moves * 1.5 + 
-                                Math.max(0, 5 - difficulty.metrics.errorMargin) * 1.5 + 
-                                (difficulty.metrics.cognitiveLoad === 'Extreme' ? 5 : difficulty.metrics.cognitiveLoad === 'High' ? 4 : difficulty.metrics.cognitiveLoad === 'Medium' ? 2 : 0)
-                              )))}/20
-                            </strong>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
-                )}
               </div>
             </div>
           </div>
