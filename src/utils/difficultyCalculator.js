@@ -95,9 +95,10 @@ export const calculateDifficulty = (levelData) => {
         const block = blocks[i];
         const isSortedBase = (i === 0 && (!depot.isLocked || depot.lockColor === block.color));
         if (!isSortedBase) {
-          // Add 2 moves (out and in) per chunk of the block
+          // Add 1 move (taking OUT of depot) per chunk of the block
+          // Routing into another depot is free
           const chunks = Math.ceil(block.count / effectiveCap);
-          minMoves += chunks * 2;
+          minMoves += chunks;
         }
       }
     }
@@ -112,25 +113,35 @@ export const calculateDifficulty = (levelData) => {
   if (errorMargin < 0) errorMargin = 0;
 
   // 3. Cognitive Load
-  let cognitiveScore = (hiddenCars * 1.5) + (lockedDepots * 3) + colorEntropy;
+  // If error margin is high, it's easier to think and plan.
+  let adjustedEntropy = colorEntropy;
+  if (errorMargin > 8) {
+    adjustedEntropy = Math.max(0, colorEntropy - (errorMargin - 8));
+  }
+
+  let cognitiveScore = (hiddenCars * 1.5) + (lockedDepots * 3) + adjustedEntropy;
   let cognitiveLoadStr = 'Low';
   if (cognitiveScore > 15) cognitiveLoadStr = 'Extreme';
   else if (cognitiveScore > 10) cognitiveLoadStr = 'High';
   else if (cognitiveScore > 5) cognitiveLoadStr = 'Medium';
 
   // Calculate Final Score (1-20)
-  let baseScore = Math.min(10, (unsortedCars / Math.max(1, totalCars)) * 10);
+  // Instead of just relying on unsorted cars, use the new estimated minMoves.
+  let moveComplexity = Math.min(10, (minMoves / Math.max(1, totalCars)) * 15); 
+  let baseScore = moveComplexity;
   
-  // Penalty for low error margin (up to 5 points)
-  let capacityPenalty = 0;
-  if (errorMargin <= 1) capacityPenalty = 5;
-  else if (errorMargin <= 3) capacityPenalty = 3;
-  else if (errorMargin <= 5) capacityPenalty = 1;
+  // Modifier for error margin (can now reduce difficulty if margin is huge)
+  let capacityModifier = 0;
+  if (errorMargin <= 1) capacityModifier = 5;
+  else if (errorMargin <= 3) capacityModifier = 3;
+  else if (errorMargin <= 5) capacityModifier = 1;
+  else if (errorMargin >= 10 && errorMargin < 15) capacityModifier = -2;
+  else if (errorMargin >= 15) capacityModifier = -4;
 
   // Penalty for cognitive load (up to 5 points)
   let cogPenalty = Math.min(5, cognitiveScore / 3);
 
-  let finalScore = Math.round(baseScore + capacityPenalty + cogPenalty);
+  let finalScore = Math.round(baseScore + capacityModifier + cogPenalty);
   
   // Cap between 1 and 20
   finalScore = Math.max(1, Math.min(20, finalScore));
