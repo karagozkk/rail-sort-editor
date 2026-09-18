@@ -309,4 +309,4 @@
   border-radius: 8px;
   z-index: 20;
 }
-.difficulty-badge:hover .tooltip-content { display: block !important; }
+.difficulty-badge.open .tooltip-content { display: block !important; }
