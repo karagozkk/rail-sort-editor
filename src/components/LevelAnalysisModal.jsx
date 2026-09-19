@@ -117,6 +117,44 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
     }
   };
 
+  const handleThemeChange = (filename, newTheme) => {
+    const val = parseInt(newTheme, 10);
+    if (isNaN(val)) return;
+
+    const savedLevels = localStorage.getItem('railsort-levels');
+    if (savedLevels) {
+      const parsedLevels = JSON.parse(savedLevels);
+      if (parsedLevels[filename]) {
+        parsedLevels[filename].theme = val;
+        localStorage.setItem('railsort-levels', JSON.stringify(parsedLevels));
+        
+        setLevelMetrics(prev => prev.map(m => {
+          if (m.filename === filename) {
+            const newRaw = { ...m.rawLevelData, theme: val };
+            return { ...m, theme: val, rawLevelData: newRaw };
+          }
+          return m;
+        }));
+        
+        setDisplayedMetrics(prev => prev.map(m => {
+          if (m.filename === filename) {
+            const newRaw = { ...m.rawLevelData, theme: val };
+            return { ...m, theme: val, rawLevelData: newRaw };
+          }
+          return m;
+        }));
+
+        if (hoveredLevel && hoveredLevel.filename === filename) {
+          setHoveredLevel(prev => ({ 
+            ...prev, 
+            theme: val, 
+            rawLevelData: { ...prev.rawLevelData, theme: val } 
+          }));
+        }
+      }
+    }
+  };
+
   const handleSaveOrder = () => {
     const savedLevels = localStorage.getItem('railsort-levels');
     if (savedLevels) {
@@ -306,7 +344,16 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
                       style={{ width: '50px', background: 'var(--bg-color)', color: 'white', border: '1px solid var(--border-color)', borderRadius: '4px', padding: '2px 4px' }}
                     />
                   </td>
-                  <td style={tdStyle}>{formatTheme(level.theme)}</td>
+                  <td style={tdStyle}>
+                    <select 
+                      value={level.theme} 
+                      onChange={(e) => handleThemeChange(level.filename, e.target.value)}
+                      style={{ background: 'var(--bg-color)', color: 'white', border: '1px solid var(--border-color)', borderRadius: '4px', padding: '2px 4px' }}
+                    >
+                      <option value={0}>Forest</option>
+                      <option value={1}>Mine</option>
+                    </select>
+                  </td>
                   <td style={tdStyle}>{level.hasHidden ? '✅' : '❌'}</td>
                   <td style={tdStyle}>{level.hasLocked ? '✅' : '❌'}</td>
                   <td style={tdStyle}>
