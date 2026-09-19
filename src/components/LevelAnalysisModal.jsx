@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { calculateDifficulty } from '../utils/difficultyCalculator';
+import Grid from './Grid';
+import { carColors } from '../App';
 
 const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
   const [levelMetrics, setLevelMetrics] = useState([]);
@@ -7,6 +9,7 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
   const [isCustomOrder, setIsCustomOrder] = useState(false);
   const [displayedMetrics, setDisplayedMetrics] = useState([]);
   const [draggedIndex, setDraggedIndex] = useState(null);
+  const [hoveredLevel, setHoveredLevel] = useState(null);
 
   useEffect(() => {
     try {
@@ -41,7 +44,8 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
             theme: data.theme || 0,
             hasHidden,
             hasLocked,
-            totalCars
+            totalCars,
+            rawLevelData: data
           };
         });
 
@@ -177,7 +181,7 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
     }} onClick={onClose}>
       <div style={{
         backgroundColor: 'var(--panel-bg)', padding: '28px', borderRadius: '12px',
-        width: '960px', maxWidth: '95vw', maxHeight: '85vh', overflowY: 'hidden',
+        width: '1280px', maxWidth: '95vw', maxHeight: '85vh', overflowY: 'hidden',
         border: '1px solid var(--border-color)', boxShadow: '0 12px 36px rgba(0,0,0,0.6)',
         color: 'var(--text-primary)', display: 'flex', flexDirection: 'column', gap: '20px'
       }} onClick={(e) => e.stopPropagation()}>
@@ -198,8 +202,13 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
           </button>
         </div>
 
-        {/* Table Container */}
-        <div style={{ overflowY: 'auto', flex: 1 }}>
+        {/* Main Content: Table on Left, Preview on Right */}
+        <div style={{ display: 'flex', gap: '24px', flex: 1, overflow: 'hidden' }}>
+          
+          {/* Left Column: Table & Footer */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
+            {/* Table Container */}
+            <div style={{ overflowY: 'auto', flex: 1, border: '1px solid var(--border-color)', borderRadius: '8px', backgroundColor: 'var(--bg-color)' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
             <thead style={{ position: 'sticky', top: 0, backgroundColor: 'var(--panel-bg)', zIndex: 1 }}>
               <tr style={{ borderBottom: '2px solid var(--border-color)' }}>
@@ -280,6 +289,8 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
                     <button 
                       className="primary-btn" 
                       style={{ padding: '4px 10px', fontSize: '12px' }}
+                      onMouseEnter={() => setHoveredLevel(level)}
+                      onMouseLeave={() => setHoveredLevel(null)}
                       onClick={() => {
                         onSelectLevel(level.filename);
                         onClose();
@@ -301,25 +312,79 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
           </table>
         </div>
 
-        {/* Footer */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '12px', borderTop: '1px solid var(--border-color)', gap: '12px' }}>
-          <button 
-            className="secondary-btn" 
-            onClick={handleSaveOrder}
-            title="Tablodaki sırayı kaydeder (Dosya isimlerini değiştirmez)"
-          >
-            💾 Save Order
-          </button>
-          <button 
-            className="primary-btn" 
-            style={{ background: '#7f1d1d', borderColor: '#7f1d1d' }}
-            onClick={handleRenameLevels}
-            title="Sıralamaya göre dosyaları kalıcı olarak yeniden adlandırır (level_1, level_2...)"
-          >
-            ⚠️ Rename Levels
-          </button>
-        </div>
+            {/* Footer */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '16px', gap: '12px' }}>
+              <button 
+                className="secondary-btn" 
+                onClick={handleSaveOrder}
+                title="Tablodaki sırayı kaydeder (Dosya isimlerini değiştirmez)"
+              >
+                💾 Save Order
+              </button>
+              <button 
+                className="primary-btn" 
+                style={{ background: '#7f1d1d', borderColor: '#7f1d1d' }}
+                onClick={handleRenameLevels}
+                title="Sıralamaya göre dosyaları kalıcı olarak yeniden adlandırır (level_1, level_2...)"
+              >
+                ⚠️ Rename Levels
+              </button>
+            </div>
+          </div>
 
+          {/* Right Column: Preview Area */}
+          <div style={{ 
+            width: '320px', 
+            backgroundColor: 'var(--bg-color)', 
+            border: '1px solid var(--border-color)', 
+            borderRadius: '8px',
+            display: 'flex', 
+            flexDirection: 'column',
+            overflow: 'hidden'
+          }}>
+            <div style={{ padding: '12px', borderBottom: '1px solid var(--border-color)', fontWeight: 'bold', backgroundColor: 'var(--panel-bg)' }}>
+              Level Preview
+            </div>
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden', padding: '20px' }}>
+              {hoveredLevel ? (
+                <div style={{
+                  transform: 'scale(0.55)',
+                  transformOrigin: 'center center',
+                  pointerEvents: 'none'
+                }}>
+                  <div style={{
+                    pointerEvents: 'none',
+                    borderRadius: '8px',
+                    overflow: 'hidden',
+                    boxShadow: '0 0 20px rgba(0,0,0,0.5)',
+                    backgroundColor: hoveredLevel.theme === 1 ? '#2c221e' : '#1e2d24',
+                    border: '4px solid var(--border-color)'
+                  }}>
+                    <Grid 
+                      gridSize={hoveredLevel.rawLevelData.gridSize || {width: 8, height: 16}}
+                      isHalfGrid={false}
+                      spline={hoveredLevel.rawLevelData.spline || {nodes: []}}
+                      depots={hoveredLevel.rawLevelData.depots || []}
+                      carColors={carColors}
+                      onCellClick={() => {}}
+                      onNodeClick={() => {}}
+                      onRotateDepot={() => {}}
+                      onDepotMouseDown={() => {}}
+                      onMouseDown={() => {}}
+                      onCarClick={() => {}}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '20px' }}>
+                  <p style={{ fontSize: '32px', margin: '0 0 12px 0' }}>👀</p>
+                  <p>Hover over any <strong>Open</strong> button to see a preview of the level here.</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   );
