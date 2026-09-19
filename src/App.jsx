@@ -424,15 +424,16 @@ function App() {
     setGridSize(prev => ({ width: prev.height, height: prev.width }));
     
     // Rotate spline (90 degrees clockwise)
-    // Formula: newX = oldZ, newZ = oldWidth - oldX
+    // Spline nodes have a 0.5 offset in Z internally, so we adjust for it.
+    // Formula: newX = oldZ - 0.5, newZ = oldWidth - oldX - 0.5
     setSpline(prev => {
       if (!prev || !prev.nodes) return prev;
       return {
         ...prev,
         nodes: prev.nodes.map(n => ({
           ...n,
-          x: n.z,
-          z: oldWidth - n.x
+          x: n.z - 0.5,
+          z: oldWidth - n.x - 0.5
         }))
       };
     });
