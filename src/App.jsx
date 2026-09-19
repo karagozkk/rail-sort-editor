@@ -70,6 +70,8 @@ function App() {
   const [levelsList, setLevelsList] = useState(['level_1.json']);
   const [selectedLevel, setSelectedLevel] = useState('level_1.json');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [autoHidden, setAutoHidden] = useState(true);
+  const [autoLocked, setAutoLocked] = useState(true);
 
   const [activeTab, setActiveTab] = useState('map'); // 'map' or 'depots'
   const [selectedDepotId, setSelectedDepotId] = useState(null);
@@ -389,7 +391,7 @@ function App() {
 
   const handleAutofill = () => {
     saveHistory();
-    const newDepots = generateSolvablePuzzle(depots);
+    const newDepots = generateSolvablePuzzle(depots, { useHidden: autoHidden, useLocked: autoLocked });
     setDepots(newDepots);
   };
 
@@ -809,32 +811,69 @@ function App() {
             ℹ️
           </button>
           
-          <button
-            className="info-btn"
-            onClick={handleAutofill}
-            title="Autofill (Çözülebilir otomatik doldurma)"
-            style={{
-              position: 'absolute',
-              top: '16px',
-              right: '16px',
-              zIndex: 100,
-              width: '38px',
-              height: '38px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--panel-bg)',
-              border: '1px solid var(--border-color)',
-              color: 'var(--text-primary)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '18px',
-              cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            🎲
-          </button>
+          <div style={{
+            position: 'absolute',
+            top: '16px',
+            right: '16px',
+            zIndex: 100,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px',
+            alignItems: 'center'
+          }}>
+            <button
+              className="info-btn"
+              onClick={handleAutofill}
+              title="Autofill (Çözülebilir otomatik doldurma)"
+              style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--panel-bg)',
+                border: '1px solid var(--border-color)',
+                color: 'var(--text-primary)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '18px',
+                cursor: 'pointer',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              🎲
+            </button>
+            <button
+              onClick={() => setAutoHidden(!autoHidden)}
+              title={`Hidden Vagons: ${autoHidden ? 'ON' : 'OFF'}`}
+              style={{
+                width: '32px', height: '32px', borderRadius: '50%',
+                backgroundColor: autoHidden ? '#14532d' : 'var(--panel-bg)',
+                border: `1px solid ${autoHidden ? '#4ade80' : 'var(--border-color)'}`,
+                color: autoHidden ? '#fff' : 'var(--text-secondary)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer', fontSize: '14px', opacity: autoHidden ? 1 : 0.5,
+                transition: 'all 0.2s'
+              }}
+            >
+              ❓
+            </button>
+            <button
+              onClick={() => setAutoLocked(!autoLocked)}
+              title={`Locked Depots: ${autoLocked ? 'ON' : 'OFF'}`}
+              style={{
+                width: '32px', height: '32px', borderRadius: '50%',
+                backgroundColor: autoLocked ? '#78350f' : 'var(--panel-bg)',
+                border: `1px solid ${autoLocked ? '#fbbf24' : 'var(--border-color)'}`,
+                color: autoLocked ? '#fff' : 'var(--text-secondary)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer', fontSize: '14px', opacity: autoLocked ? 1 : 0.5,
+                transition: 'all 0.2s'
+              }}
+            >
+              🔒
+            </button>
+          </div>
           
           <div 
             className="difficulty-badge tooltip-container"

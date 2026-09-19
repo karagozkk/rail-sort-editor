@@ -1,4 +1,4 @@
-export const generateSolvablePuzzle = (currentDepots) => {
+export const generateSolvablePuzzle = (currentDepots, options = { useHidden: true, useLocked: true }) => {
   // Deep clone to avoid mutating state
   const depots = JSON.parse(JSON.stringify(currentDepots));
 
@@ -24,8 +24,8 @@ export const generateSolvablePuzzle = (currentDepots) => {
     d.isLocked = false;
     d.lockColor = null;
     
-    // 20% chance to lock a depot
-    if (Math.random() < 0.2) {
+    // 20% chance to lock a depot if enabled
+    if (options.useLocked && Math.random() < 0.2) {
       d.isLocked = true;
       d.lockColor = Math.floor(Math.random() * numColors) + 1;
     }
@@ -113,8 +113,8 @@ export const generateSolvablePuzzle = (currentDepots) => {
       const d = tempDepots[chosenDepotIndex];
       const slotIndex = currentDepotOccupancy[chosenDepotIndex];
       
-      // Randomize hidden status (e.g. 15% chance to hide the pair)
-      const shouldHide = Math.random() < 0.15;
+      // Randomize hidden status (e.g. 15% chance to hide the pair) if enabled
+      const shouldHide = options.useHidden ? (Math.random() < 0.15) : false;
       d.cars[`slot_${slotIndex}`] = { color: p, isHidden: shouldHide };
       d.cars[`slot_${slotIndex + 1}`] = { color: p, isHidden: shouldHide };
       
