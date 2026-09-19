@@ -255,8 +255,14 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
                     cursor: draggedIndex !== null ? 'grabbing' : 'default',
                     opacity: draggedIndex === index ? 0.5 : 1
                   }} 
-                  onMouseOver={e => { if (draggedIndex === null) e.currentTarget.style.backgroundColor = '#1e293b'; }} 
-                  onMouseOut={e => { if (draggedIndex === null) e.currentTarget.style.backgroundColor = 'transparent'; }}
+                  onMouseEnter={e => { 
+                    if (draggedIndex === null) e.currentTarget.style.backgroundColor = '#1e293b'; 
+                    setHoveredLevel(level);
+                  }} 
+                  onMouseLeave={e => { 
+                    if (draggedIndex === null) e.currentTarget.style.backgroundColor = 'transparent'; 
+                    setHoveredLevel(null);
+                  }}
                 >
                   <td style={tdStyle}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'grab', fontSize: '16px', color: 'var(--text-secondary)' }}>
@@ -289,8 +295,6 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
                     <button 
                       className="primary-btn" 
                       style={{ padding: '4px 10px', fontSize: '12px' }}
-                      onMouseEnter={() => setHoveredLevel(level)}
-                      onMouseLeave={() => setHoveredLevel(null)}
                       onClick={() => {
                         onSelectLevel(level.filename);
                         onClose();
