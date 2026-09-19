@@ -5,6 +5,7 @@ import Grid from './components/Grid';
 import ExportSettingsModal from './components/ExportSettingsModal';
 import ImportWorkspaceModal from './components/ImportWorkspaceModal';
 import InfoModal from './components/InfoModal';
+import LevelAnalysisModal from './components/LevelAnalysisModal';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { exportToUnity } from './utils/exportUnity';
@@ -62,6 +63,7 @@ function App() {
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
   const [lastActiveDepotId, setLastActiveDepotId] = useState(null);
   const [lastActiveObject, setLastActiveObject] = useState(null);
   const [lastActiveWagons, setLastActiveWagons] = useState(null);
@@ -771,6 +773,7 @@ function App() {
           <button className="secondary-btn" onClick={() => setIsImportModalOpen(true)}>📥 Import Workspace (.zip)</button>
           <button className="secondary-btn" onClick={handleExportWorkspace}>📤 Export Workspace (.zip)</button>
           <div style={{ width: '1px', height: '24px', background: 'var(--border-color)', margin: '0 4px' }}></div>
+          <button className="secondary-btn" onClick={() => setIsAnalysisModalOpen(true)} title="Tüm bölümleri analiz et">📊 Analiz</button>
           <button className="danger-btn" onClick={handleClear}>🗑️ Clear</button>
           <button className="primary-btn" onClick={handleSaveLevel}>💾 Save Level</button>
           <button className="primary-btn" style={{ background: '#2c3e50', borderColor: '#34495e' }} onClick={() => setIsExportModalOpen(true)}>🎮 Export To Unity</button>
@@ -936,7 +939,18 @@ function App() {
             onClose={() => setIsInfoModalOpen(false)} 
           />
         )}
-        
+        {isAnalysisModalOpen && (
+          <LevelAnalysisModal 
+            onClose={() => setIsAnalysisModalOpen(false)} 
+            onSelectLevel={(filename) => {
+              if (hasUnsavedChanges) {
+                const confirm = window.confirm("Kaydedilmemiş değişiklikler var. Devam ederseniz kaybolacaklar. Yine de açmak istiyor musunuz? / There are unsaved changes. They will be lost if you proceed. Do you want to open anyway?");
+                if (!confirm) return;
+              }
+              setSelectedLevel(filename);
+            }} 
+          />
+        )}
         {isImportModalOpen && (
           <ImportWorkspaceModal
             onClose={() => setIsImportModalOpen(false)}
