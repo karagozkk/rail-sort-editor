@@ -152,14 +152,32 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
       });
 
       const newParsedLevels = {};
+      let logContent = "Level Rename Log\n----------------\n\n";
+      
       keys.forEach((key, index) => {
         const newName = `level_${index + 1}.json`;
         newParsedLevels[newName] = { ...parsedLevels[key] };
         delete newParsedLevels[newName].order; // clean up order metadata
+        
+        logContent += `${key}  ->  ${newName}\n`;
       });
 
+      // Generate text file and download
+      const blob = new Blob([logContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `level_rename_log_${new Date().toISOString().replace(/[:.]/g, '-')}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
       localStorage.setItem('railsort-levels', JSON.stringify(newParsedLevels));
-      window.location.reload();
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     }
   };
 
