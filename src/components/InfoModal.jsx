@@ -46,6 +46,9 @@ const InfoModal = ({ onClose }) => {
             <kbd style={kbdStyle}>R</kbd>
             <span>Seçili veya son aktif depoyu 90° döndür</span>
 
+            <kbd style={kbdStyle}>Shift + R</kbd>
+            <span>Bütün bölümü (grid, depolar ve yollar) saat yönünde 90° döndür</span>
+
             <kbd style={kbdStyle}>H</kbd>
             <span>Seçili vagonun gizlilik durumunu aç / kapat (Hidden / ?)</span>
 

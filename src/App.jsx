@@ -416,12 +416,51 @@ function App() {
     setDepots(prev => [...prev].reverse());
   };
 
+  const handleRotateAll = () => {
+    saveHistory();
+    const oldWidth = gridSize.width;
+    
+    // Swap width and height
+    setGridSize(prev => ({ width: prev.height, height: prev.width }));
+    
+    // Rotate spline (90 degrees clockwise)
+    // Formula: newX = oldZ, newZ = oldWidth - oldX
+    setSpline(prev => {
+      if (!prev || !prev.nodes) return prev;
+      return {
+        ...prev,
+        nodes: prev.nodes.map(n => ({
+          ...n,
+          x: n.z,
+          z: oldWidth - n.x
+        }))
+      };
+    });
+    
+    // Rotate depots
+    const dirMap = {
+      'top': 'right',
+      'right': 'bottom',
+      'bottom': 'left',
+      'left': 'top'
+    };
+    
+    setDepots(prev => prev.map(d => ({
+      ...d,
+      x: d.z,
+      z: oldWidth - d.x,
+      entryDirection: dirMap[d.entryDirection]
+    })));
+  };
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
       if (e.key === 'r' || e.key === 'R') {
-        if (lastActiveDepotId) {
+        if (e.shiftKey) {
+          handleRotateAll();
+        } else if (lastActiveDepotId) {
           handleRotateDepot(lastActiveDepotId);
         }
       } else if (e.key === 'h' || e.key === 'H') {
