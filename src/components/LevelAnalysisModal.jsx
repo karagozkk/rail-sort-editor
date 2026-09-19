@@ -3,7 +3,7 @@ import { calculateDifficulty } from '../utils/difficultyCalculator';
 
 const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
   const [levelMetrics, setLevelMetrics] = useState([]);
-  const [sortConfig, setSortConfig] = useState({ key: 'levelNumber', direction: 'asc' });
+  const [sortConfig, setSortConfig] = useState({ key: 'order', direction: 'asc' });
   const [isCustomOrder, setIsCustomOrder] = useState(false);
   const [displayedMetrics, setDisplayedMetrics] = useState([]);
   const [draggedIndex, setDraggedIndex] = useState(null);
@@ -34,6 +34,7 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
           return {
             filename,
             levelNumber,
+            order: data.order !== undefined ? data.order : levelNumber,
             depotCount: depots.length,
             trainCapacity: data.trainCapacity || 8,
             difficultyScore: difficulty.score,
@@ -113,17 +114,44 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
   };
 
   const handleSaveOrder = () => {
-    const confirm = window.confirm("Bu işlem tüm dosyaların isimlerini mevcut listeye göre sıralı olarak baştan yazacaktır (level_1.json, level_2.json...). Onaylıyor musunuz?");
+    const savedLevels = localStorage.getItem('railsort-levels');
+    if (savedLevels) {
+      const parsedLevels = JSON.parse(savedLevels);
+      
+      displayedMetrics.forEach((metric, index) => {
+        if (parsedLevels[metric.filename]) {
+          parsedLevels[metric.filename].order = index + 1;
+        }
+      });
+
+      localStorage.setItem('railsort-levels', JSON.stringify(parsedLevels));
+      alert("Order metadata saved! Level names are NOT changed.");
+    }
+  };
+
+  const handleRenameLevels = () => {
+    const confirm = window.confirm("This will permanently rename all level files sequentially (level_1.json, level_2.json...) based on their saved order. Are you sure?");
     if (!confirm) return;
 
     const savedLevels = localStorage.getItem('railsort-levels');
     if (savedLevels) {
       const parsedLevels = JSON.parse(savedLevels);
-      const newParsedLevels = {};
       
-      displayedMetrics.forEach((metric, index) => {
+      // Sort keys by order
+      const keys = Object.keys(parsedLevels).sort((a,b) => {
+        const orderA = parsedLevels[a].order !== undefined ? parsedLevels[a].order : 999999;
+        const orderB = parsedLevels[b].order !== undefined ? parsedLevels[b].order : 999999;
+        if (orderA !== orderB) return orderA - orderB;
+        const numA = parseInt(a.replace('level_', '').replace('.json', '')) || 0;
+        const numB = parseInt(b.replace('level_', '').replace('.json', '')) || 0;
+        return numA - numB;
+      });
+
+      const newParsedLevels = {};
+      keys.forEach((key, index) => {
         const newName = `level_${index + 1}.json`;
-        newParsedLevels[newName] = parsedLevels[metric.filename];
+        newParsedLevels[newName] = { ...parsedLevels[key] };
+        delete newParsedLevels[newName].order; // clean up order metadata
       });
 
       localStorage.setItem('railsort-levels', JSON.stringify(newParsedLevels));
@@ -175,7 +203,7 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
             <thead style={{ position: 'sticky', top: 0, backgroundColor: 'var(--panel-bg)', zIndex: 1 }}>
               <tr style={{ borderBottom: '2px solid var(--border-color)' }}>
-                <th style={thStyle}>Order</th>
+                <th style={thStyle} onClick={() => handleSort('order')}>Order {getSortIcon('order')}</th>
                 <th style={thStyle} onClick={() => handleSort('levelNumber')}>Level {getSortIcon('levelNumber')}</th>
                 <th style={thStyle} onClick={() => handleSort('difficultyScore')}>Difficulty {getSortIcon('difficultyScore')}</th>
                 <th style={thStyle} onClick={() => handleSort('depotCount')}>Depots {getSortIcon('depotCount')}</th>
@@ -222,8 +250,8 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
                   onMouseOut={e => { if (draggedIndex === null) e.currentTarget.style.backgroundColor = 'transparent'; }}
                 >
                   <td style={tdStyle}>
-                    <div style={{ display: 'flex', gap: '4px', cursor: 'grab', fontSize: '16px', color: 'var(--text-secondary)' }}>
-                      ☰
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'grab', fontSize: '16px', color: 'var(--text-secondary)' }}>
+                      ☰ <span style={{ fontSize: '13px', fontWeight: 'bold' }}>{index + 1}</span>
                     </div>
                   </td>
                   <td style={tdStyle}>{level.filename.replace('.json', '')}</td>
@@ -274,14 +302,21 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
         </div>
 
         {/* Footer */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '12px', borderTop: '1px solid var(--border-color)' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '12px', borderTop: '1px solid var(--border-color)', gap: '12px' }}>
+          <button 
+            className="secondary-btn" 
+            onClick={handleSaveOrder}
+            title="Tablodaki sırayı kaydeder (Dosya isimlerini değiştirmez)"
+          >
+            💾 Save Order
+          </button>
           <button 
             className="primary-btn" 
-            style={{ background: '#0f766e', borderColor: '#0d9488' }}
-            onClick={handleSaveOrder}
-            title="Tablodaki sıraya göre dosyaları level_1, level_2 şeklinde yeniden adlandırır"
+            style={{ background: '#7f1d1d', borderColor: '#7f1d1d' }}
+            onClick={handleRenameLevels}
+            title="Sıralamaya göre dosyaları kalıcı olarak yeniden adlandırır (level_1, level_2...)"
           >
-            💾 Save Order & Rename Levels
+            ⚠️ Rename Levels
           </button>
         </div>
 

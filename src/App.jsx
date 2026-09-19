@@ -96,6 +96,9 @@ function App() {
     }
     
     const keys = Object.keys(parsedLevels).sort((a,b) => {
+      const orderA = parsedLevels[a].order !== undefined ? parsedLevels[a].order : 999999;
+      const orderB = parsedLevels[b].order !== undefined ? parsedLevels[b].order : 999999;
+      if (orderA !== orderB) return orderA - orderB;
       const numA = parseInt(a.replace('level_', '').replace('.json', '')) || 0;
       const numB = parseInt(b.replace('level_', '').replace('.json', '')) || 0;
       return numA - numB;
