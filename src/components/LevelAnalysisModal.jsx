@@ -6,6 +6,7 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
   const [sortConfig, setSortConfig] = useState({ key: 'levelNumber', direction: 'asc' });
   const [isCustomOrder, setIsCustomOrder] = useState(false);
   const [displayedMetrics, setDisplayedMetrics] = useState([]);
+  const [draggedIndex, setDraggedIndex] = useState(null);
 
   useEffect(() => {
     try {
@@ -187,11 +188,42 @@ const LevelAnalysisModal = ({ onClose, onSelectLevel }) => {
             </thead>
             <tbody>
               {displayedMetrics.map((level, index) => (
-                <tr key={level.filename} style={{ borderBottom: '1px solid #334155', transition: 'background-color 0.2s' }} onMouseOver={e => e.currentTarget.style.backgroundColor = '#1e293b'} onMouseOut={e => e.currentTarget.style.backgroundColor = 'transparent'}>
+                <tr 
+                  key={level.filename} 
+                  draggable
+                  onDragStart={(e) => {
+                    setIsCustomOrder(true);
+                    setDraggedIndex(index);
+                    e.dataTransfer.effectAllowed = "move";
+                    // Hack for Firefox support
+                    e.dataTransfer.setData("text/plain", index);
+                  }}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = "move";
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    if (draggedIndex === null || draggedIndex === index) return;
+                    const newMetrics = [...displayedMetrics];
+                    const item = newMetrics.splice(draggedIndex, 1)[0];
+                    newMetrics.splice(index, 0, item);
+                    setDisplayedMetrics(newMetrics);
+                    setDraggedIndex(null);
+                  }}
+                  onDragEnd={() => setDraggedIndex(null)}
+                  style={{ 
+                    borderBottom: '1px solid #334155', 
+                    transition: 'background-color 0.2s',
+                    cursor: draggedIndex !== null ? 'grabbing' : 'default',
+                    opacity: draggedIndex === index ? 0.5 : 1
+                  }} 
+                  onMouseOver={e => { if (draggedIndex === null) e.currentTarget.style.backgroundColor = '#1e293b'; }} 
+                  onMouseOut={e => { if (draggedIndex === null) e.currentTarget.style.backgroundColor = 'transparent'; }}
+                >
                   <td style={tdStyle}>
-                    <div style={{ display: 'flex', gap: '4px' }}>
-                      <button className="icon-btn" onClick={() => handleMove(index, 'up')} disabled={index === 0} style={{ padding: '2px 4px' }}>⬆️</button>
-                      <button className="icon-btn" onClick={() => handleMove(index, 'down')} disabled={index === displayedMetrics.length - 1} style={{ padding: '2px 4px' }}>⬇️</button>
+                    <div style={{ display: 'flex', gap: '4px', cursor: 'grab', fontSize: '16px', color: 'var(--text-secondary)' }}>
+                      ☰
                     </div>
                   </td>
                   <td style={tdStyle}>{level.filename.replace('.json', '')}</td>
